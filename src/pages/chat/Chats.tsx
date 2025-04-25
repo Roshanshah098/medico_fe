@@ -55,7 +55,7 @@ const Chats = () => {
             return (
               <div
                 key={chat.id || chat.consultation}
-                onClick={() => navigate(`/chats/${chat.consultation}`)}
+                onClick={() => navigate(`/chat/${chat.consultation}`)}
                 className={`p-5 relative border border-gray-200 rounded-2xl shadow- cursor-pointer hover:scale-105 transition-all duration-200 
               ${
                 newChat ? "bg-blue-100 border-blue-600 border-2" : "bg-blue-100"

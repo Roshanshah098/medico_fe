@@ -64,27 +64,9 @@ const ConsultationPage = () => {
       toast.success("Doctor rated successfully");
       toast.success("Feedback sent successfully");
       closeRate();
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error rating doctor:", error);
-      if (error.response && error.response.data) {
-        const errorData = error.response.data;
-
-   
-        if (
-        
-        (errorData.non_field_errors)
-        ) {
-          toast.error(errorData.non_field_errors[0]); 
-        } else {
-         
-          toast.error("Failed to rate doctor");
-    
-
-        }
-      } else {
-    
-        toast.error("An unexpected error occurred");
-      }
+      toast.error("Failed to rate doctor");
     }
   };
 
@@ -321,19 +303,17 @@ const ConsultationPage = () => {
                             >
                               View Details
                             </Badge>
-                            {userProfile?.role === "Patient" && (
-                              <Badge
-                                color="blue"
-                                variant="light"
-                                className="cursor-pointer"
-                                onClick={() => {
-                                  setSelectedConsultation(consultation);
-                                  openRate();
-                                }}
-                              >
-                                Rate Doctor
-                              </Badge>
-                            )}
+                            <Badge
+                              color="blue"
+                              variant="light"
+                              className="cursor-pointer"
+                              onClick={() => {
+                                setSelectedConsultation(consultation);
+                                openRate();
+                              }}
+                            >
+                              Rate Doctor
+                            </Badge>
                           </Box>
                         </Group>
                       </Card>
@@ -463,20 +443,23 @@ const ConsultationPage = () => {
                   </Text>
                 </Box>
               </Stack>
-              <Box className="flex justify-between pt-4">
-                <Button className="bg-red-500 hover:bg-red-700 transition-colors duration-200">
-                  Reject
-                </Button>
-                <Button
-                  onClick={() => handleAccept(selectedConsultation?.id)}
-                  className="bg-green-400 hover:bg-primary-700 transition-colors duration-200 text-white"
-                  disabled={selectedConsultation?.status === "active"}
-                >
-                  {selectedConsultation?.status === "active"
-                    ? "Accepted"
-                    : "Accept"}
-                </Button>
-              </Box>
+           {userProfile?.role != "Patient" && (
+               
+               <Box className="flex justify-between pt-4">
+               <Button className="bg-red-500 hover:bg-red-700 transition-colors duration-200">
+                 Reject
+               </Button>
+               <Button
+                 onClick={() => handleAccept(selectedConsultation?.id)}
+                 className="bg-green-400 hover:bg-primary-700 transition-colors duration-200 text-white"
+                 disabled={selectedConsultation?.status === "active"}
+               >
+                 {selectedConsultation?.status === "active"
+                   ? "Accepted"
+                   : "Accept"}
+               </Button>
+             </Box>
+           )}
             </Box>
           </Stack>
         )}

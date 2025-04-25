@@ -20,7 +20,7 @@ const navItems = [
     to: "/doctors",
     icon: <Icons.Stethescope className="mr-2" />,
     label: "Doctors",
-    roles: ["Admin"],
+    roles: ["Patient"],
   },
   {
     to: "/consultation",
@@ -38,20 +38,20 @@ const navItems = [
     to: "/medical-history",
     icon: <Icons.History className="mr-2" />,
     label: "Medical History",
-    roles: ["Admin"],
+    roles: [],
   },
   {
     to: "/settings",
     icon: <Icons.Settings className="mr-2" />,
     label: "Settings",
-    roles: ["Admin"],
+    roles: [],
   },
-  // {
-  //   to: "",
-  //   icon: <Icons.LogOut className="mr-2" />,
-  //   label: "Logout",
-  //   roles: ["Admin", "Doctor", "Patient"],
-  // },
+  {
+    to: "/logout",
+    icon: <Icons.LogOut className="mr-2" />,
+    label: "Logout",
+    roles: ["Admin", "Doctor", "Patient"],
+  },
 ];
 
 const Sidebar = () => {
@@ -64,14 +64,14 @@ const Sidebar = () => {
   const filteredNavItems = navItems.filter((item) => item.roles.includes(role));
 
   return (
-    <div className="h-screen w-2/12 bg-primary_bg flex flex-col ">
+    <div className="h-screen w-2/12 bg-primary_bg flex flex-col">
       {/* Header */}
       <div className="p-6">
         <h1 className="text-2xl font-bold text-blue-600 capitalize">{role}</h1>
       </div>
 
       {/* Navigation List */}
-      <ul className="space-y-1 mt-8">
+      <ul className="space-y-1">
         {filteredNavItems.map(({ to, icon, label }) => (
           <li key={to}>
             <NavLink

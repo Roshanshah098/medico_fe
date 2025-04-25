@@ -45,7 +45,7 @@ export const isValidDate = (dateString: string): boolean => {
     const isBirthdayPassed = monthDiff > 0 || (monthDiff === 0 && today.getDate() >= dobDate.getDate());
   
     // Check if the date is in the future or if the age is less than 16
-    return dobDate <= today && (isBirthdayPassed ? age >= 16 : age > 16);
+    return dobDate <= today && (isBirthdayPassed ? age >= 14 : age > 14);
   };
   
   

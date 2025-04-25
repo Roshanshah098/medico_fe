@@ -15,6 +15,4 @@ export const publicRoutes = [
   { path: ROUTES.SETNEWPASSWORD, element: <SetNewPassoword /> },
 
   { path: ROUTES.OTPVERIFY, element: <OtpVerify /> },
-  { path: ROUTES.OTPVERIFYLEFT, element: <OtpVerify /> },
-
 ];

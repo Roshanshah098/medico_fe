@@ -15,12 +15,15 @@ import { Icons } from "../../assets/icons";
 interface ChatMessage {
   id?: string;
   sender: string;
+  sender_name: string;
+  user_type: string | null;
   message: string;
   isTemporary?: boolean;
 }
 
 const SingleChat = () => {
   const { userProfile } = useUserStore();
+  const [chatWith, setChatWith] = useState("");
   const [chats, setChats] = useState<ChatMessage[]>([]);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -49,6 +52,8 @@ const SingleChat = () => {
     const tempMessage: ChatMessage = {
       sender: userProfile.email,
       message: messageText,
+      sender_name: userProfile.name || "",
+      user_type: userProfile.role,
       isTemporary: true,
     };
 
@@ -129,45 +134,75 @@ const SingleChat = () => {
           <div className="w-6/12">
             <div className="flex py-3 px-4 border-b items-center gap-4">
               {userProfile?.role === "Patient" ? (
-                <Icons.Stethescope className="size-6 text-primary-400" /> 
+                <img src="/doctorProfile.jpg" alt="" className="size-12" />
+              ) : userProfile?.gender === "Female" ? (
+                <img src="/female.jpg" alt="" className="size-12" />
               ) : (
-                <Icons.User className="size-6 text-primary-400" />
+                <img src="/male.jpg" alt="" className="size-12" />
               )}
               <h2 className="text-xl font-bold text-primary-500">
-                {userProfile?.role === "Patient" ? "Doctor" : "Patient"}
+                {userProfile?.role === "Patient" ? "Dr." : ""} {chatWith}
               </h2>
             </div>
             <div className="w-full py-4 px-2 h-[70vh] overflow-y-auto  mx-auto ">
-              {[...chats].reverse().map((item, index) => (
-                <div
-                  key={item.id || index}
-                  className={`w-full flex items-end gap-2 pb-6 ${
-                    item.sender === userProfile?.email ? "justify-end" : ""
-                  }`}
-                >
-                  {userProfile?.email != item.sender &&
-                    (userProfile?.role === "Patient" ? (
-                      <Icons.Stethescope className="rounded-xl border shadow-md" />
-                    ) : (
-                      <Icons.User className="rounded-xl border shadow-md" />
-                    ))}
+              {[...chats].reverse().map((item, index) => {
+                if (item.user_type != userProfile?.role && chatWith === "") {
+                  setChatWith(item.sender_name);
+                }
+
+                return (
                   <div
-                    className={`p-3 rounded-xl border  max-w-[70%] shadow-sm border-gray-300 ${
-                      item.sender === userProfile?.email
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-300 text-black"
-                    } ${item.isTemporary ? "opacity-70" : ""}`}
+                    key={item.id || index}
+                    className={`w-full flex items-end gap-2 pb-6 ${
+                      item.user_type === userProfile?.role ? "justify-end" : ""
+                    }`}
                   >
-                    <div className="">{item.message}</div>
+                    {userProfile?.role != item.user_type &&
+                      (userProfile?.role === "Patient" ? (
+                        <img
+                          src="/doctorProfile.jpg"
+                          alt=""
+                          className="size-7"
+                        />
+                      ) : userProfile?.gender === "Male" ? (
+                        <img src="/male.jpg" alt="" className="size-7" />
+                      ) : (
+                        <img src="/female.jpg" alt="" className="size-7" />
+                      ))}
+                    <div
+                      className={`p-3 rounded-xl border  max-w-[70%] shadow-sm border-gray-300 ${
+                        item.user_type === userProfile?.role
+                          ? "bg-blue-600 text-white"
+                          : "bg-gray-300 text-black"
+                      } ${item.isTemporary ? "opacity-70" : ""}`}
+                    >
+                      <div className="">{item.message}</div>
+                    </div>
+                    {userProfile?.role === item.user_type &&
+                      (userProfile?.role === "Patient" ? (
+                        userProfile?.gender === "Male" ? (
+                          <img
+                            src="/male.jpg"
+                            alt=""
+                            className="size-7 rounded-full"
+                          />
+                        ) : (
+                          <img
+                            src="/female.jpg"
+                            alt=""
+                            className="size-7 rounded-full"
+                          />
+                        )
+                      ) : (
+                        <img
+                          src="/doctorProfile.jpg"
+                          alt=""
+                          className="size-7 rounded-full"
+                        />
+                      ))}
                   </div>
-                  {userProfile?.email === item.sender &&
-                    (userProfile?.role === "Patient" ? (
-                      <Icons.User className="rounded-xl border shadow-md" />
-                    ) : (
-                      <Icons.Stethescope className="rounded-xl border shadow-md" />
-                    ))}
-                </div>
-              ))}
+                );
+              })}
 
               {/* This ref will auto-scroll to bottom */}
               <div ref={bottomRef} />

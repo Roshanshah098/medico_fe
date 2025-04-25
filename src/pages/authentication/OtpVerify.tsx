@@ -7,7 +7,7 @@ import { otpVerify, resendOtp } from "../../services/endpoints/authService";
 import { toast } from "react-toastify";
 import { SpinningLoader2 } from "../../components/common/loading/SpinningLoader";
 import { Icons } from "../../assets/icons";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface OtpFormData {
   otp: string[];
@@ -17,9 +17,6 @@ const OtpVerify = () => {
     otp: Array(4).fill(""),
   });
   const navigate = useNavigate();
-  const { input } = useParams();
-  const decodedInput =
-    typeof input === "string" ? decodeURIComponent(input) : "";
   const { email } = useEmailStore();
   const { setUserProfile } = useUserStore();
   const [isLoading, setIsLoading] = useState(false);
@@ -73,7 +70,7 @@ const OtpVerify = () => {
 
     try {
       const payload = {
-        email: decodedInput ? decodedInput : email,
+        email: email,
         otp: otp,
       };
       const response = await otpVerify(payload);
@@ -128,7 +125,7 @@ const OtpVerify = () => {
   };
 
   return (
-    <div className=" flex items-center justify-center bg-gray-100 px-4 py-12 sm:px-6 lg:px-8">
+    <div className=" h-screen flex items-center justify-center bg-gray-100 px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-xl  p-8 flex flex-col gap-8  bg-white rounded-lg">
         <div className="flex flex-col mb-3 gap-2">
           <h2 className="text-2xl text-center font-bold ">Check your email</h2>

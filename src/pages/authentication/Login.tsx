@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import  {
-  useEmailStore,
-  useUserStore,
-} from "../../stores/tokenStore";
+import { useEmailStore, useUserStore } from "../../stores/tokenStore";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../../components/common/FormInput";
 import PasswordInput from "../../components/common/PasswordInput";
@@ -96,10 +93,7 @@ const Login = () => {
       }
     } catch (error: any) {
       if (error.response?.data) {
-        toast.error(error.response.data.detail);
-        if(error.response.data.detail = "Please verify your account via OTP first."){
-navigate(`/otp-verify/${formData.email}`)
-        }
+        toast.error(error.response.data?.detail);
       } else {
         toast.error(error.message || "An error occurred");
       }

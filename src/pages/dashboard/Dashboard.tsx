@@ -10,8 +10,10 @@ import {
 import { BarChart, LineChart, PieChart } from "@mantine/charts";
 import "@mantine/charts/styles.css";
 import { Icons } from "../../assets/icons";
-
-
+import { APIGetDoctors } from "../../api/doctor";
+import { useEffect, useState } from "react";
+import { APIGetAllConsultations } from "../../api/consultation";
+import { APIGetAllUsers } from "../../api/profile";
 
 // Sample data for various charts
 const patientStats = [
@@ -40,6 +42,34 @@ const appointmentTypes = [
 ];
 
 const Dashboard = () => {
+  const [doctor, setDoctor] = useState(8);
+  const [consultation, setConsultation] = useState(18);
+  const [users, setUsers] = useState(11);
+
+  const fetchAllDoctors = async () => {
+    const res = await APIGetDoctors();
+    setDoctor(res?.data?.count);
+    console.log(res);
+  };
+
+  const fetchAllUsers = async () => {
+    const res = await APIGetAllUsers();
+    setUsers(res?.data?.count);
+    console.log(res);
+  };
+
+  const fetchAllConsultation = async () => {
+    const res = await APIGetAllConsultations();
+    setConsultation(res?.data?.count);
+    console.log(res);
+  };
+
+  useEffect(() => {
+    fetchAllConsultation();
+    fetchAllDoctors();
+    fetchAllUsers();
+  }, []);
+
   return (
     <div className="p-8">
       <Text size="xl" fw={700} mb="md">
@@ -64,7 +94,7 @@ const Dashboard = () => {
                 sections={[{ value: 75, color: "blue" }]}
                 label={
                   <Center>
-                    <Icons.User size="1.4rem"  />
+                    <Icons.User size="1.4rem" />
                   </Center>
                 }
               />
@@ -73,7 +103,7 @@ const Dashboard = () => {
                   Total Patients
                 </Text>
                 <Text size="xl" fw={700}>
-                  1,234
+                  {users}
                 </Text>
                 <Text size="xs" c="green">
                   +12% this month
@@ -108,7 +138,7 @@ const Dashboard = () => {
                   Active Doctors
                 </Text>
                 <Text size="xl" fw={700}>
-                  24
+                  {doctor}
                 </Text>
                 <Text size="xs" c="green">
                   +2 this month
@@ -134,7 +164,7 @@ const Dashboard = () => {
                 sections={[{ value: 90, color: "orange" }]}
                 label={
                   <Center>
-                    <Icons.Calender size="1.4rem"  />
+                    <Icons.Calender size="1.4rem" />
                   </Center>
                 }
               />
@@ -143,7 +173,7 @@ const Dashboard = () => {
                   Appointments
                 </Text>
                 <Text size="xl" fw={700}>
-                  156
+                  {consultation}
                 </Text>
                 <Text size="xs" c="green">
                   +15% this week
@@ -169,7 +199,7 @@ const Dashboard = () => {
                 sections={[{ value: 95, color: "violet" }]}
                 label={
                   <Center>
-                    <Icons.Chartbar size="1.4rem"  />
+                    <Icons.Chartbar size="1.4rem" />
                   </Center>
                 }
               />
